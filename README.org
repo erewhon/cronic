@@ -1,0 +1,71 @@
+Sometimes you just want cron.
+
+However, there are problems.
+
+1. It's distributed, but not always in a good way
+2. By default, it emails if something goes wrong. 
+3. crontabs can get whacked
+4. Jobs can overlap, hang, etc
+
+There are a number of cron wrappers out there.  As a matter of fact,
+it's really fairly trivial to write one.    
+
+So I decided to write one, too!   
+
+"cronic" has 3 pieces: a runner, an optional central server, and a UI.
+
+The runner is written in (Go | OCaml) for simplified deployment.  If
+you're the kind of person who wants to specify a ton of different
+options, you can.  Or you can build a custom executable the default
+options baked in.
+
+The server is very simple.  It just tracks cron invocations.  Which
+server, what job, when it started, and when it ended.  It also captures
+log output.
+
+There is also a web UI for monitoring.
+
+The easiest way to add "cronic" is to make it your crontab shell.  You
+should always explicitly add an invocation of cronic to backup your
+crontab, and do other things.
+
+
+If you want distributed locking, you can always use Consul locking. (https://www.consul.io/docs/commands/lock.html) 
+
+Other desirable traits:
+- run Python, Ruby, and Node environments (e.g. pyenv, rvm, etc.)
+- before and after hooks (after hook can validate output?)
+- job dependencies
+
+So you can trace jobs through the system and make jobs wait on other
+jobs; only works if you have distributed lock manager like "consul".
+
+
+* Alternatives
+
+- https://github.com/rakanalh/scheduler
+- https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/
+- https://github.com/jasonlvhit/gocron
+- https://github.com/rakanalh/scheduler
+
+* Resources
+
+- https://adamj.eu/tech/2014/08/16/time-to-move-on-from-cron/
+- https://habilis.net/cronic/
+- http://saltnlight5.blogspot.com/2014/06/a-simple-cron-wrapper-script-with.html
+- https://github.com/thefab/cronwrapper - adds locking, timeouts.   In Python
+- https://github.com/instacart/ohmycron - adds logs.   Can run as a shell.   Supports distributed locks
+- https://www.endpoint.com/blog/2015/02/06/cron-wrapper-keep-your-cron-jobs - 
+- http://web.taranis.org/shush/
+
+- http://unixwiz.net/tools/lockrun.html
+- https://unix.stackexchange.com/questions/22044/correct-locking-in-shell-scripts
+- https://unix.stackexchange.com/questions/70/what-unix-commands-can-be-used-as-a-semaphore-lock
+- https://stackoverflow.com/questions/185451/quick-and-dirty-way-to-ensure-only-one-instance-of-a-shell-script-is-running-at
+- https://unix.stackexchange.com/questions/70/what-unix-commands-can-be-used-as-a-semaphore-lock
+- https://github.com/mirage/irmin
+
+
+* UI
+
+- https://medium.com/@DmytroGladkyi/create-react-app-with-reasonml-aa9c03849c3b
